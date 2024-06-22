@@ -7,7 +7,7 @@ class Vertex:
     self.distance = 0 # distance of this vertex from the source (s)
     self.parent = None
 
-  # Adding the hash func and eq func to allow 
+  # Adding the hash func and eq func to allow use as HashMap key
   def __hash__(self):
     return hash(self.id)
 
