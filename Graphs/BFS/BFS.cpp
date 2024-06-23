@@ -48,22 +48,47 @@ namespace std {
 
 class Graph {
   public:
-    // unordered_map to store Vertex : -> [ neighbor vertices ]
-    std::unordered_map<Vertex, std::vector<Vertex>> adj_matrix;
+  // unordered_map to store Vertex : -> [ neighbor vertices ]
+  std::unordered_map<Vertex*, std::vector<Vertex*>> adj_list_;
   
+  // Add edge to graph from u to v, assume directed for now
+  void AddEdge(Vertex* u, Vertex* v) {
+    // if the vertex u is not in the adj list ...
+    if(adj_list_.find(u) == adj_list_.end()) {
+      // ... start a list for that vertex u 
+      adj_list_.insert({u, std::vector<Vertex*>()});
+    }
 
-  void AddEdge(Vertex u, Vertex v) {
+    // if the vertex v is not in the adj list ...
+    if(adj_list_.find(v) == adj_list_.end()) {
+      // ... start a list for that vertex v
+      adj_list_.insert({v, std::vector<Vertex*>()});
+    }
 
+    // add the edge v to u
+    adj_list_[u].push_back(v);
+    // adj_list[u].push_back(u);  // for the case of undirected, but comment for noq
   }
 
 
-  Vertex GetVertex(int id) {
+  Vertex* GetVertex(int id) {
 
+    // use an iterator to loop through the keys
+    for(auto it=adj_list_.begin(); it != adj_list_.end(); ++it) {
+
+      // if the vertex's id is equal to id passed 
+      if (it->first->id == id) {
+        return it->first; // return vertex
+      }
+    }
+    return nullptr;
   }
 
-  std::vector<Vertex> GetListFor(Vertex u) {
-
-
+  std::vector<Vertex*> GetListFor(Vertex* u) {
+    if(adj_list_.find(u) != adj_list_.end()) {
+      return adj_list_[u];
+    }
+    return std::vector<Vertex*>();
   }
 };
 
